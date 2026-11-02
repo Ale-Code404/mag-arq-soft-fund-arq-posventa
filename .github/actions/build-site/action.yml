@@ -28,6 +28,6 @@ runs:
       shell: bash
       run: python scripts/validar_adr.py
 
-    - name: Compilar sitio (modo estricto)
+    - name: Compilar sitio
       shell: bash
       run: mkdocs build --strict
