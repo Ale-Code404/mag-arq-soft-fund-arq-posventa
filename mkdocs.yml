@@ -1,0 +1,63 @@
+site_name: Portal de Consulta de Posventa UAN
+site_description: Arquitectura de alto nivel (HLD) y registro de decisiones (ADR) del Portal de Consulta de Posventa de la Constructora UAN.
+site_author: Cristian A. Acosta A.
+site_url: https://ale-code404.github.io/mag-arq-soft-fund-arq-posventa/
+repo_url: https://github.com/Ale-Code404/mag-arq-soft-fund-arq-posventa
+repo_name: Ale-Code404/mag-arq-soft-fund-arq-posventa
+edit_uri: edit/main/docs/
+copyright: Maestría en Arquitectura de Software · Universidad Antonio Nariño · 2026-2
+
+theme:
+  name: material
+  language: es
+  palette:
+    - scheme: default
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Modo oscuro
+    - scheme: slate
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Modo claro
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.footer
+    - navigation.top
+    - content.action.edit
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search:
+      lang: es
+
+nav:
+  - Inicio: index.md
+  - Arquitectura (HLD):
+      - hld/index.md
+      - Necesidad y objetivo: hld/necesidad-objetivo.md
+      - Alcance: hld/alcance.md
+      - Requerimientos: hld/requerimientos.md
+      - Arquitectura propuesta: hld/arquitectura.md
+      - Conclusiones: hld/conclusiones.md
+  - Decisiones (ADR):
+      - adr/index.md
+      - adr/0000-registrar-decisiones-con-madr.md
+      - adr/0001-api-de-consulta-entre-web-y-posventa.md
+      - adr/0002-autenticacion-con-proveedor-de-identidad.md
+      - adr/0003-consulta-en-linea-sin-replica.md
+      - adr/0004-documentacion-como-codigo.md
+      - Plantilla: adr/plantilla.md
+  - Cómo se construye: construccion.md

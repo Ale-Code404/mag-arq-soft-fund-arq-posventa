@@ -1,0 +1,33 @@
+name: Compilar sitio
+description: Exporta los diagramas de draw.io, valida los ADR y compila el sitio con MkDocs en modo estricto.
+runs:
+  using: composite
+  steps:
+    - name: Exportar diagramas draw.io a SVG
+      shell: bash
+      run: |
+        docker run --rm -v "$PWD/docs/diagramas:/data" -w /data \
+          rlespinasse/drawio-desktop-headless \
+          -x -f svg -p 0 --border 10 -o casos-uso.svg posventa.drawio
+        docker run --rm -v "$PWD/docs/diagramas:/data" -w /data \
+          rlespinasse/drawio-desktop-headless \
+          -x -f svg -p 1 --border 10 -o contenedores.svg posventa.drawio
+        ls -l docs/diagramas
+
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: pip
+
+    - name: Instalar MkDocs
+      shell: bash
+      run: pip install -r requirements.txt
+
+    - name: Validar ADR
+      shell: bash
+      run: python scripts/validar_adr.py
+
+    - name: Compilar sitio (modo estricto)
+      shell: bash
+      run: mkdocs build --strict

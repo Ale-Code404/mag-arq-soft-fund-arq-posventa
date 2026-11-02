@@ -1,0 +1,5 @@
+site/
+dist/
+docs/diagramas/*.svg
+__pycache__/
+.venv/

@@ -1,0 +1,44 @@
+name: PDF del release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Etiqueta del release al que se adjunta el PDF (por ejemplo v1.0.0)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  pdf:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+
+      - uses: ./.github/actions/build-site
+
+      - name: Instalar Playwright y Chromium
+        run: |
+          pip install -r requirements-pdf.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Generar PDF
+        run: python scripts/generar_pdf.py --version "$TAG" --out "dist/HLD-ADR-Posventa-$TAG.pdf"
+
+      - name: Adjuntar PDF al release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$TAG" "dist/HLD-ADR-Posventa-$TAG.pdf" --clobber
+
+      - name: Guardar PDF como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: HLD-ADR-Posventa-${{ env.TAG }}
+          path: dist/*.pdf
