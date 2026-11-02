@@ -8,10 +8,10 @@ runs:
       run: |
         docker run --rm -v "$PWD/docs/diagramas:/data" -w /data \
           rlespinasse/drawio-desktop-headless \
-          -x -f svg -p 0 --border 10 -o casos-uso.svg posventa.drawio
+          -x -f svg -p 1 --border 10 -o casos-uso.svg posventa.drawio
         docker run --rm -v "$PWD/docs/diagramas:/data" -w /data \
           rlespinasse/drawio-desktop-headless \
-          -x -f svg -p 1 --border 10 -o contenedores.svg posventa.drawio
+          -x -f svg -p 2 --border 10 -o contenedores.svg posventa.drawio
         ls -l docs/diagramas
 
     - name: Configurar Python

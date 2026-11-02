@@ -18,7 +18,7 @@ scripts/
 .github/
   actions/build-site/   Pasos comunes: diagramas, validación y compilación
   workflows/pages.yml   Publica el sitio en cada push a main
-  workflows/release.yml Genera el PDF y lo adjunta a cada release
+  workflows/release.yml Genera el PDF y crea el release con él
 ```
 
 ## Automatización
@@ -26,7 +26,7 @@ scripts/
 | Evento | Flujo | Pasos |
 |---|---|---|
 | Push a `main` | `pages.yml` | Exporta `posventa.drawio` a SVG, valida los ADR, compila con `mkdocs build --strict` y publica en GitHub Pages. |
-| Release publicado | `release.yml` | Repite la compilación, imprime cada página en el orden del menú, une el resultado en un PDF con portada y lo adjunta al release. |
+| Etiqueta `v*` o release publicado | `release.yml` | Repite la compilación, imprime cada página en el orden del menú, une el resultado en un PDF con portada y crea el release con el PDF adjunto. |
 
 La compilación estricta convierte en error cualquier enlace roto o imagen faltante. Si un ADR no tiene `status`, `date` o alguna sección obligatoria, la validación detiene la publicación.
 
@@ -42,5 +42,5 @@ Los SVG de los diagramas los genera el flujo de publicación. Para verlos en loc
 ## Publicar una versión
 
 1. Actualiza el contenido y haz push a `main`.
-2. En GitHub, crea un release con una etiqueta `vX.Y.Z`.
-3. El flujo adjunta `HLD-ADR-Posventa-vX.Y.Z.pdf` al release.
+2. Crea y sube una etiqueta: `git tag v1.0.0 && git push origin v1.0.0`. También sirve crear el release desde GitHub.
+3. El flujo crea el release y adjunta `HLD-ADR-Posventa-vX.Y.Z.pdf`.

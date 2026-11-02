@@ -1,6 +1,8 @@
-name: PDF del release
+name: Release con PDF
 
 on:
+  push:
+    tags: ["v*"]
   release:
     types: [published]
   workflow_dispatch:
@@ -16,7 +18,7 @@ jobs:
   pdf:
     runs-on: ubuntu-latest
     env:
-      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      TAG: ${{ github.event.release.tag_name || inputs.tag || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,10 +34,16 @@ jobs:
       - name: Generar PDF
         run: python scripts/generar_pdf.py --version "$TAG" --out "dist/HLD-ADR-Posventa-$TAG.pdf"
 
-      - name: Adjuntar PDF al release
+      - name: Crear el release o adjuntar el PDF
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "$TAG" "dist/HLD-ADR-Posventa-$TAG.pdf" --clobber
+        run: |
+          PDF="dist/HLD-ADR-Posventa-$TAG.pdf"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$PDF" --clobber
+          else
+            gh release create "$TAG" "$PDF" --title "$TAG" --generate-notes
+          fi
 
       - name: Guardar PDF como artefacto
         uses: actions/upload-artifact@v4
